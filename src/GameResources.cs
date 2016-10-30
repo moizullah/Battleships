@@ -57,9 +57,12 @@ public static class GameResources
 		NewSound("Lose", "lose.wav");
 	}
 
-	private static void LoadMusic()
+	//Load 2 more music
+	public static void LoadMusic()
 	{
 		NewMusic("Background", "horrordrone.mp3");
+		NewMusic("Background2" , "Sector-Off-Limits_Looping.mp3");
+		NewMusic("Background3" , "Titan-Poweplant.mp3");
 	}
 
 	/// <summary>
@@ -287,12 +290,15 @@ public static class GameResources
 		}
 	}
 
-	private static void FreeMusic()
+	public static void FreeMusic()
 	{
 		foreach (Music obj in _Music.Values) {
 			Audio.FreeMusic(obj);
 		}
 	}
+
+
+
 
 	public static void FreeResources()
 	{

@@ -15,6 +15,10 @@ using SwinGameSDK;
 public static class GameController
 {
 
+	private static String _music = "Background";
+	public static Boolean Musicstate; 
+
+
 	private static BattleShipsGame _theGame;
 	private static Player _human;
 
@@ -22,7 +26,14 @@ public static class GameController
 
 	private static Stack<GameState> _state = new Stack<GameState>();
 
-	private static AIOption _aiSetting;
+	public static AIOption _aiSetting;
+
+
+	public static String MusicOption {
+		get { return _music; }
+	}
+
+
 	/// <summary>
 	/// Returns the current state of the game, indicating which screen is
 	/// currently being used
@@ -283,6 +294,9 @@ public static class GameController
 			case GameState.AlteringSettings:
 			MenuController.HandleSetupMenuInput();
 				break;
+			case GameState.ChangingMusic:
+				MenuController.HandleMusicMenuInput();
+				break;
 			case GameState.Deploying:
 			DeploymentController.HandleDeploymentInput();
 				break;
@@ -318,7 +332,10 @@ public static class GameController
 			MenuController.DrawGameMenu();
 				break;
 			case GameState.AlteringSettings:
-			MenuController.DrawSettings();
+				MenuController.DrawSettings();
+				break;
+			case GameState.ChangingMusic:
+				MenuController.DrawMusicMenu();
 				break;
 			case GameState.Deploying:
 			DeploymentController.DrawDeployment();
@@ -376,6 +393,15 @@ public static class GameController
 	{
 		_aiSetting = setting;
 	}
+
+
+	public static void SetMusic(String m)
+	{
+		_music = m;
+		Musicstate = true;
+	}
+
+
 
 }
 
