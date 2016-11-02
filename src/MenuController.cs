@@ -285,19 +285,19 @@ static class MenuController
 	private static void PerformMenuAction(int menu, int button)
 	{
 		switch (menu) {
-			case MAIN_MENU:
-				PerformMainMenuAction(button);
-				break;
-			case SETUP_MENU:
-				PerformSetupMenuAction(button);
-				break;
-			case MUSIC_MENU:
-				PerformMusicMenuAction(button);
+		case MAIN_MENU:
+			PerformMainMenuAction(button);
 			break;
-			case GAME_MENU:
-				PerformGameMenuAction(button);
+		case SETUP_MENU:
+			PerformSetupMenuAction(button);
 			break;
-		
+		case MUSIC_MENU:
+			PerformMusicMenuAction(button);
+			break;
+		case GAME_MENU:
+			PerformGameMenuAction(button);
+			break;
+
 		}
 	}
 
@@ -308,21 +308,21 @@ static class MenuController
 	private static void PerformMainMenuAction(int button)
 	{
 		switch (button) {
-			case MAIN_MENU_PLAY_BUTTON:
-				GameController.StartGame();
-				break;
-			case MAIN_MENU_SETUP_BUTTON:
-				GameController.AddNewState(GameState.AlteringSettings);
-				break;
-			case MAIN_MUSIC_SETUP_BUTTON:
-				GameController.AddNewState(GameState.ChangingMusic);
-				break;
-			case MAIN_MENU_TOP_SCORES_BUTTON:
-				GameController.AddNewState(GameState.ViewingHighScores);
-				break;
-			case MAIN_MENU_QUIT_BUTTON:
-				GameController.EndCurrentState();
-				break;
+		case MAIN_MENU_PLAY_BUTTON:
+			GameController.StartGame();
+			break;
+		case MAIN_MENU_SETUP_BUTTON:
+			GameController.AddNewState(GameState.AlteringSettings);
+			break;
+		case MAIN_MUSIC_SETUP_BUTTON:
+			GameController.AddNewState(GameState.ChangingMusic);
+			break;
+		case MAIN_MENU_TOP_SCORES_BUTTON:
+			GameController.AddNewState(GameState.ViewingHighScores);
+			break;
+		case MAIN_MENU_QUIT_BUTTON:
+			GameController.EndCurrentState();
+			break;
 		}
 	}
 
@@ -333,18 +333,18 @@ static class MenuController
 	private static void PerformSetupMenuAction(int button)
 	{
 		switch (button) {
-			case SETUP_MENU_EASY_BUTTON:
-				GameController.SetDifficulty(AIOption.Easy);
-				break;
-			case SETUP_MENU_MEDIUM_BUTTON:
-				GameController.SetDifficulty(AIOption.Medium);
-				break;
-			case SETUP_MENU_HARD_BUTTON:
-				GameController.SetDifficulty(AIOption.Hard);
-				break;
+		case SETUP_MENU_EASY_BUTTON:
+			GameController.SetDifficulty(AIOption.Easy);
+			break;
+		case SETUP_MENU_MEDIUM_BUTTON:
+			GameController.SetDifficulty(AIOption.Medium);
+			break;
+		case SETUP_MENU_HARD_BUTTON:
+			GameController.SetDifficulty(AIOption.Hard);
+			break;
 		}
 		//Always end state - handles exit button as well
-			GameController.EndCurrentState();
+		GameController.EndCurrentState();
 	}
 
 
@@ -358,11 +358,11 @@ static class MenuController
 		switch (button) {
 		case MUSIC_1:
 			GameController.SetMusic ("Background");
-		
+
 			break;
 		case MUSIC_2:
 			GameController.SetMusic("Background2");
-	
+
 			break;
 		case MUSIC_3:
 			GameController.SetMusic("Background3");
@@ -383,18 +383,18 @@ static class MenuController
 	private static void PerformGameMenuAction(int button)
 	{
 		switch (button) {
-			case GAME_MENU_RETURN_BUTTON:
-				GameController.EndCurrentState();
-				break;
-			case GAME_MENU_SURRENDER_BUTTON:
-				GameController.EndCurrentState();
-				//end game menu
-				GameController.EndCurrentState();
-				//end game
-				break;
-			case GAME_MENU_QUIT_BUTTON:
-				GameController.AddNewState(GameState.Quitting);
-				break;
+		case GAME_MENU_RETURN_BUTTON:
+			GameController.EndCurrentState();
+			break;
+		case GAME_MENU_SURRENDER_BUTTON:
+			GameController.EndCurrentState();
+			//end game menu
+			GameController.EndCurrentState();
+			//end game
+			break;
+		case GAME_MENU_QUIT_BUTTON:
+			GameController.AddNewState(GameState.Quitting);
+			break;
 		}
 	}
 

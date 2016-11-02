@@ -61,8 +61,8 @@ public static class GameResources
 	public static void LoadMusic()
 	{
 		NewMusic("Background", "horrordrone.mp3");
-		NewMusic("Background2" , "Sector_Off_Limits.mp3");
-		NewMusic("Background3" , "Game_Menu.mp3");
+		NewMusic("Background2" , "nutcrackershort.mp3");
+		NewMusic("Background3" , "Sector_Off_Limits.mp3");
 	}
 
 	/// <summary>
