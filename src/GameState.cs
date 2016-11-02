@@ -14,6 +14,11 @@ using System.Diagnostics;
 public enum GameState
 {
 	/// <summary>
+	/// The hint is being shown to the player
+	/// </summary>
+	ShowingHint,
+
+	/// <summary>
 	/// The player is viewing the main menu.
 	/// </summary>
 	ViewingMainMenu,

@@ -309,6 +309,11 @@ public static class GameController
 			case GameState.ViewingHighScores:
 			HighScoreController.HandleHighScoreInput();
 				break;
+			case GameState.ShowingHint:
+			// ShowingHint state must use same input handler as Discovery state
+			// since it works on top of the same state
+			DiscoveryController.HandleDiscoveryInput();
+				break;
 		}
 
 		UtilityFunctions.UpdateAnimations();
@@ -349,6 +354,11 @@ public static class GameController
 			case GameState.ViewingHighScores:
 			HighScoreController.DrawHighScores();
 				break;
+			case GameState.ShowingHint:
+			// ShowingHint state draws the Hints on top of the regular grid
+			DiscoveryController.DrawDiscovery();
+			DiscoveryController.DrawHint();
+				break;
 		}
 
 		UtilityFunctions.DrawAnimations();
@@ -386,6 +396,15 @@ public static class GameController
 	}
 
 	/// <summary>
+	/// Returns the last state the game was at
+	/// </summary>
+	public static GameState LastState () {
+		Stack<GameState> stateCopy = _state;
+		stateCopy.Pop ();
+		return stateCopy.Peek ();
+	}
+
+	/// <summary>
 	/// Sets the difficulty for the next level of the game.
 	/// </summary>
 	/// <param name="setting">the new difficulty level</param>
@@ -400,8 +419,6 @@ public static class GameController
 		_music = m;
 		Musicstate = true;
 	}
-
-
 
 }
 
