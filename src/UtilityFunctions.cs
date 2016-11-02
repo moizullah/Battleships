@@ -41,6 +41,9 @@ static class UtilityFunctions
 	private static readonly Color SHIP_FILL_COLOR = Color.Gray;
 	private static readonly Color SHIP_OUTLINE_COLOR = Color.White;
 
+	// Added color for ship hints
+	private static readonly Color SHIP_HINT_FILL_COLOR = Color.DarkRed;
+
 	private static readonly Color MESSAGE_COLOR = SwinGame.RGBAColor(2, 167, 252, 255);
 	public const int ANIMATION_CELLS = 7;
 
@@ -77,11 +80,24 @@ static class UtilityFunctions
 	/// <param name="grid">the grid to draw</param>
 	/// <param name="thePlayer">the players ships to show</param>
 	/// <param name="showShips">indicates if the ships should be shown</param>
-	public static void DrawField(ISeaGrid grid, Player thePlayer, bool showShips)
+	public static void DrawField(ISeaGrid grid, Player thePlayer, bool showShips, bool showHints)
 	{
-		DrawCustomField(grid, thePlayer, false, showShips, FIELD_LEFT, FIELD_TOP, FIELD_WIDTH, FIELD_HEIGHT, CELL_WIDTH, CELL_HEIGHT,
+		DrawCustomField(grid, thePlayer, false, showShips, showHints, FIELD_LEFT, FIELD_TOP, FIELD_WIDTH, FIELD_HEIGHT, CELL_WIDTH, CELL_HEIGHT,
 		CELL_GAP);
 	}
+
+	/// <summary>
+	/// Draws a large field using the grid and the indicated player's ships.
+	/// </summary>
+	/// <param name="grid">the grid to draw</param>
+	/// <param name="thePlayer">the players ships to show</param>
+	/// <param name="showShips">indicates if the ships should be shown</param>
+	public static void DrawFieldWithHint(ISeaGrid grid, Player thePlayer)
+	{
+		DrawCustomField(grid, thePlayer, false, true, true, FIELD_LEFT, FIELD_TOP, FIELD_WIDTH, FIELD_HEIGHT, CELL_WIDTH, CELL_HEIGHT,
+			CELL_GAP);
+	}
+
 
 	/// <summary>
 	/// Draws a small field, showing the attacks made and the locations of the player's ships
@@ -98,7 +114,7 @@ static class UtilityFunctions
 		const int SMALL_FIELD_CELL_HEIGHT = 13;
 		const int SMALL_FIELD_CELL_GAP = 4;
 
-		DrawCustomField(grid, thePlayer, true, true, SMALL_FIELD_LEFT, SMALL_FIELD_TOP, SMALL_FIELD_WIDTH, SMALL_FIELD_HEIGHT, SMALL_FIELD_CELL_WIDTH, SMALL_FIELD_CELL_HEIGHT,
+		DrawCustomField(grid, thePlayer, true, true, false, SMALL_FIELD_LEFT, SMALL_FIELD_TOP, SMALL_FIELD_WIDTH, SMALL_FIELD_HEIGHT, SMALL_FIELD_CELL_WIDTH, SMALL_FIELD_CELL_HEIGHT,
 		SMALL_FIELD_CELL_GAP);
 	}
 
@@ -109,6 +125,7 @@ static class UtilityFunctions
 	/// <param name="thePlayer">the player to show the ships of</param>
 	/// <param name="small">true if the small grid is shown</param>
 	/// <param name="showShips">true if ships are to be shown</param>
+	/// <param name="showHints">true if ship hints are to be shown</param>
 	/// <param name="left">the left side of the grid</param>
 	/// <param name="top">the top of the grid</param>
 	/// <param name="width">the width of the grid</param>
@@ -116,13 +133,42 @@ static class UtilityFunctions
 	/// <param name="cellWidth">the width of each cell</param>
 	/// <param name="cellHeight">the height of each cell</param>
 	/// <param name="cellGap">the gap between the cells</param>
-	private static void DrawCustomField(ISeaGrid grid, Player thePlayer, bool small, bool showShips, int left, int top, int width, int height, int cellWidth, int cellHeight,
+	private static void DrawCustomField(ISeaGrid grid, Player thePlayer, bool small, bool showShips, bool showHints, int left, int top, int width, int height, int cellWidth, int cellHeight,
 	int cellGap)
 	{
 		//SwinGame.FillRectangle(Color.Blue, left, top, width, height)
 
 		int rowTop = 0;
 		int colLeft = 0;
+
+		int shipHeight = 0;
+		int shipWidth = 0;
+		string shipName = null;
+
+		// Check if flag for showing hints is enabled
+		// Ensures hints are always drawn below the attack/miss visuals
+		if (showHints) {
+			//Draw the ships as hints
+			foreach (Ship s in thePlayer) {
+				if (s == null || !s.IsDeployed)
+					continue;
+				rowTop = top + (cellGap + cellHeight) * s.Row + SHIP_GAP;
+				colLeft = left + (cellGap + cellWidth) * s.Column + SHIP_GAP;
+
+				if (s.Direction == Direction.LeftRight) {
+					shipName = "ShipLR" + s.Size;
+					shipHeight = cellHeight - (SHIP_GAP * 2);
+					shipWidth = (cellWidth + cellGap) * s.Size - (SHIP_GAP * 2) - cellGap;
+				} else {
+					//Up down
+					shipName = "ShipUD" + s.Size;
+					shipHeight = (cellHeight + cellGap) * s.Size - (SHIP_GAP * 2) - cellGap;
+					shipWidth = cellWidth - (SHIP_GAP * 2);
+				}
+					SwinGame.FillRectangle(SHIP_HINT_FILL_COLOR, colLeft, rowTop, shipWidth, shipHeight);
+					SwinGame.DrawRectangle(SHIP_OUTLINE_COLOR, colLeft, rowTop, shipWidth, shipHeight);
+			}
+		}
 
 		//Draw the grid
 		for (int row = 0; row <= 9; row++) {
@@ -172,9 +218,9 @@ static class UtilityFunctions
 			return;
 		}
 
-		int shipHeight = 0;
-		int shipWidth = 0;
-		string shipName = null;
+		shipHeight = 0;
+		shipWidth = 0;
+		shipName = null;
 
 		//Draw the ships
 		foreach (Ship s in thePlayer) {
@@ -194,7 +240,7 @@ static class UtilityFunctions
 				shipWidth = cellWidth - (SHIP_GAP * 2);
 			}
 
-			if (!small) {
+			if (!small && !showHints) {
 				SwinGame.DrawBitmap(GameResources.GameImage(shipName), colLeft, rowTop);
 			} else {
 				SwinGame.FillRectangle(SHIP_FILL_COLOR, colLeft, rowTop, shipWidth, shipHeight);
@@ -202,7 +248,6 @@ static class UtilityFunctions
 			}
 		}
 	}
-
 
 	private static string _message;
 	/// <summary>
@@ -239,6 +284,7 @@ static class UtilityFunctions
 				break;
 			case GameState.Discovering:
 			case GameState.EndingGame:
+			case GameState.ShowingHint:	// Added ShowingHint state
 			SwinGame.DrawBitmap(GameResources.GameImage("Discovery"), 0, 0);
 				break;
 			case GameState.Deploying:

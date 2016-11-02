@@ -32,7 +32,8 @@ static class MenuController
 		new string[] {
 			"RETURN",
 			"SURRENDER",
-			"QUIT"
+			"QUIT",
+			"HINT"	// Add new menu for Hint button
 		},
 		new string[] {
 			"EASY",
@@ -79,6 +80,8 @@ static class MenuController
 	private const int GAME_MENU_RETURN_BUTTON = 0;
 	private const int GAME_MENU_SURRENDER_BUTTON = 1;
 	private const int GAME_MENU_QUIT_BUTTON = 2;
+	// Add Constant for storing hint button number
+	private const int GAME_MENU_HINT_BUTTON = 3;
 
 	private static readonly Color MENU_COLOR = SwinGame.RGBAColor(2, 167, 252, 255);
 	private static readonly Color HIGHLIGHT_COLOR = SwinGame.RGBAColor(1, 57, 86, 255);
@@ -395,13 +398,18 @@ static class MenuController
 			case GAME_MENU_QUIT_BUTTON:
 				GameController.AddNewState(GameState.Quitting);
 				break;
+			// Handle the Hint Button being clicked
+			case GAME_MENU_HINT_BUTTON:
+				// Disable the Hint Button if at Deployment stage of the game
+			if (GameController.LastState ().Equals (GameState.Deploying)) {
+				break;
+			} else {
+				// Switch state of the game to ShowingHint state
+				GameController.SwitchState(GameState.ShowingHint);
+				break;
+			}
 		}
 	}
-
-
-
-
-
 
 
 }
