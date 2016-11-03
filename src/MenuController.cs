@@ -379,13 +379,13 @@ static class MenuController
 
 			//Wasiqs addition
 			case TURN_OFF:
-			GameController.Music=false;
-
+			//GameController.Music=false;
+			SwinGame.StopMusic();
 			break;
 
 			//Wasiqs addition
-			case TURN_ON:
-			GameController.Music = true;
+		case TURN_ON:
+			GameController.SetMusic (GameController.MusicOption);
 
 			break;
 		}
