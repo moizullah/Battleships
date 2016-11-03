@@ -43,7 +43,9 @@ static class MenuController
 		new string[] {
 			"MUSIC 1",
 			"MUSIC 2",
-			"MUSIC 3"
+			"MUSIC 3",
+			"TURN OFF", //Wasiqs Addition
+			"TURN ON" //Wasiqs Addition
 		}
 	};
 
@@ -71,6 +73,9 @@ static class MenuController
 	private const int MUSIC_1 = 0;
 	private const int MUSIC_2 = 1;
 	private const int MUSIC_3 = 2;
+	private const int TURN_OFF = 3;	//Wasiqs Addition
+	private const int TURN_ON = 4; //Wasiqs Addition
+
 
 	private const int SETUP_MENU_EASY_BUTTON = 0;
 	private const int SETUP_MENU_MEDIUM_BUTTON = 1;
@@ -369,6 +374,18 @@ static class MenuController
 			break;
 		case MUSIC_3:
 			GameController.SetMusic("Background3");
+
+			break;
+
+			//Wasiqs addition
+			case TURN_OFF:
+			GameController.Music=false;
+
+			break;
+
+			//Wasiqs addition
+			case TURN_ON:
+			GameController.Music = true;
 
 			break;
 		}

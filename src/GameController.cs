@@ -18,6 +18,7 @@ public static class GameController
 	private static String _music = "Background";
 	public static Boolean Musicstate; 
 
+	public static Boolean Music=true;//Wasiqs Changes
 
 	private static BattleShipsGame _theGame;
 	private static Player _human;
@@ -103,6 +104,7 @@ public static class GameController
 		//AddHandler _human.PlayerGrid.Changed, AddressOf GridChanged
 		_ai.PlayerGrid.Changed += GridChanged;
 		_theGame.AttackCompleted += AttackCompleted;
+
 
 		AddNewState(GameState.Deploying);
 	}

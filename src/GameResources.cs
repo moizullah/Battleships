@@ -55,6 +55,7 @@ public static class GameResources
 		NewSound("Miss", "watershot.wav");
 		NewSound("Winner", "winner.wav");
 		NewSound("Lose", "lose.wav");
+		NewSound("Off", "off.wav"); // Wasiqs Addition
 	}
 
 	//Load 2 more music
@@ -63,6 +64,7 @@ public static class GameResources
 		NewMusic("Background", "horrordrone.mp3");
 		NewMusic("Background2" , "nutcrackershort.mp3");
 		NewMusic("Background3" , "Sector_Off_Limits.mp3");
+		NewMusic("Off", "off.wav");
 	}
 
 	/// <summary>
@@ -95,7 +97,12 @@ public static class GameResources
 
 	public static SoundEffect GameSound(string sound)
 	{
-		return _Sounds[sound];
+		if (GameController.Music) {//Wasiqs Changes
+			return _Sounds [sound];
+		} else {
+			return _Sounds ["Off"];
+
+		}
 	}
 
 	/// <summary>
@@ -106,7 +113,11 @@ public static class GameResources
 
 	public static Music GameMusic(string music)
 	{
-		return _Music[music];
+		if (GameController.Music) {
+			return _Music [music];
+		} else { 
+			return _Music ["Off"];
+		}
 	}
 
 	private static Dictionary<string, Bitmap> _Images = new Dictionary<string, Bitmap>();
