@@ -325,6 +325,7 @@ static class MenuController
 		case MAIN_MUSIC_SETUP_BUTTON:
 			GameController.AddNewState(GameState.ChangingMusic);
 			break;
+
 		case MAIN_MENU_TOP_SCORES_BUTTON:
 			GameController.AddNewState(GameState.ViewingHighScores);
 			break;

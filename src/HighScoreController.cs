@@ -165,26 +165,22 @@ static class HighScoreController
 	public static void ReadHighScore(int value)
 	{
 		const int ENTRY_TOP = 500;
-
 		if (_Scores.Count == 0)
 			LoadScores();
-
 		//is it a high score
 		if (value > _Scores[_Scores.Count - 1].Value) {
 			Score s = new Score();
 			s.Value = value;
-
 			GameController.AddNewState(GameState.ViewingHighScores);
-
 			int x = 0;
 			x = SCORES_LEFT + SwinGame.TextWidth(GameResources.GameFont("Courier"), "Name: ");
 
-			SwinGame.StartReadingText(Color.White, NAME_WIDTH, GameResources.GameFont("Courier"), x, ENTRY_TOP);
+			// Allowing 4 characters to be read shows space for 3 characters by default
+			SwinGame.StartReadingText(Color.White, NAME_WIDTH + 1, GameResources.GameFont("Courier"), x, ENTRY_TOP);
 
 			//Read the text from the user
 			while (SwinGame.ReadingText()) {
 				SwinGame.ProcessEvents();
-
 				UtilityFunctions.DrawBackground();
 				DrawHighScores();
 				SwinGame.DrawText("Name: ", Color.White, GameResources.GameFont("Courier"), SCORES_LEFT, ENTRY_TOP);
@@ -192,15 +188,22 @@ static class HighScoreController
 			}
 
 			s.Name = SwinGame.TextReadAsASCII();
-
 			if (s.Name.Length < 3) {
 				s.Name = s.Name + new string(Convert.ToChar(" "), 3 - s.Name.Length);
+			}
+
+			// Truncate entry to a 3 character string if its more than 3 characters long
+			if (s.Name.Length == 4) {
+				Char[] name = s.Name.ToCharArray ();
+				String truncatedName = "";
+				for (int z = 0; z < 3; z++)
+					truncatedName += name [z].ToString ();
+				s.Name = truncatedName;
 			}
 
 			_Scores.RemoveAt(_Scores.Count - 1);
 			_Scores.Add(s);
 			_Scores.Sort();
-
 			GameController.EndCurrentState();
 		}
 	}
