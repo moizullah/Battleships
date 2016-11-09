@@ -123,7 +123,7 @@ public static class GameResources
 	private static Dictionary<string, Bitmap> _Images = new Dictionary<string, Bitmap>();
 	private static Dictionary<string, Font> _Fonts = new Dictionary<string, Font>();
 	private static Dictionary<string, SoundEffect> _Sounds = new Dictionary<string, SoundEffect>();
-
+	private static Dictionary<string, Timer> _Timer = new Dictionary<string, Timer>();
 	private static Dictionary<string, Music> _Music = new Dictionary<string, Music>();
 	private static Bitmap _Background;
 	private static Bitmap _Animation;
@@ -308,6 +308,14 @@ public static class GameResources
 		}
 	}
 
+	public static void FreeTimer()
+	{
+		foreach (Timer t in _Timer.Values)
+		{
+			SwinGame.FreeTimer (t);
+		}
+	}
+
 
 
 
@@ -317,6 +325,7 @@ public static class GameResources
 		FreeImages();
 		FreeMusic();
 		FreeSounds();
+		FreeTimer ();
 		SwinGame.ProcessEvents();
 	}
 }

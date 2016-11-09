@@ -220,6 +220,8 @@ public static class GameController
 		//deploy the players
 		_theGame.AddDeployedPlayer(_human);
 		_theGame.AddDeployedPlayer(_ai);
+		DiscoveryController.CreateTimer ();
+		DiscoveryController.StartTimer ();
 
 		SwitchState(GameState.Discovering);
 	}
@@ -348,9 +350,11 @@ public static class GameController
 			DeploymentController.DrawDeployment();
 				break;
 			case GameState.Discovering:
+			DiscoveryController.DrawTimer ();
 			DiscoveryController.DrawDiscovery();
 				break;
 			case GameState.EndingGame:
+			DiscoveryController.StopTimer ();
 			EndingGameController.DrawEndOfGame();
 				break;
 			case GameState.ViewingHighScores:
@@ -358,6 +362,7 @@ public static class GameController
 				break;
 			case GameState.ShowingHint:
 			// ShowingHint state draws the Hints on top of the regular grid
+			DiscoveryController.DrawTimer();
 			DiscoveryController.DrawDiscovery();
 			DiscoveryController.DrawHint();
 				break;

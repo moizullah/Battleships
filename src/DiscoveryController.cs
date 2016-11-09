@@ -12,6 +12,7 @@ using SwinGameSDK;
 
 static class DiscoveryController
 {
+	static Timer gameTime;
 
 	/// <summary>
 	/// Handles input during the discovery phase of the game.
@@ -85,6 +86,32 @@ static class DiscoveryController
 	public static void DrawHint ()
 	{
 		UtilityFunctions.DrawField(GameController.HumanPlayer.EnemyGrid, GameController.ComputerPlayer, false, true);
+	}
+
+	public static void DrawTimer()
+	{
+		int ticks;
+		string toDraw;
+
+		ticks = Convert.ToInt32 (SwinGame.TimerTicks (gameTime)) / 1000;
+
+		toDraw = ticks.ToString ();
+		SwinGame.DrawText (toDraw, Color.White, GameResources.GameFont ("Menu"), 0, 0);
+	}
+
+	public static void CreateTimer()
+	{
+		gameTime = SwinGame.CreateTimer ();
+	}
+
+	public static void StartTimer()
+	{
+		SwinGame.StartTimer (gameTime);
+	}
+
+	public static void StopTimer()
+	{
+		SwinGame.StopTimer (gameTime);
 	}
 }
 
